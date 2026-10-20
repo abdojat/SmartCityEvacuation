@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task_id": "T08",
+  "status": "DONE",
+  "owner": "codex-benchmark",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:55:48Z",
+  "started_at": "2026-10-20T18:53:59Z",
+  "completed_at": "2026-10-20T18:55:48Z",
+  "blocked_reason": null,
+  "evidence": [
+    "Maven test BUILD SUCCESS (43 tests); headless smoke export produced 18 validated rows with one shared fingerprint across both modes and workers 1,2,4,8,16."
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "Maven test BUILD SUCCESS: 43 tests, 0 failures/errors. Real headless CLI export benchmarks/smoke-2026-10-20.csv: 18 schema-v1 rows (6 warmup, 12 measured)."
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "Smoke CSV contains matching final fingerprint across SEQUENTIAL and PARALLEL workers 1,2,4,8,16; BenchmarkRunnerTest validates matching results and rejects a deliberate mismatch."
+    }
+  }
+}

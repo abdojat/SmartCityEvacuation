@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task_id": "T06",
+  "status": "DONE",
+  "owner": "codex-ui",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:53:56Z",
+  "started_at": "2026-10-20T18:50:19Z",
+  "completed_at": "2026-10-20T18:53:56Z",
+  "blocked_reason": null,
+  "evidence": [
+    "Coordinator accepted automated T06 criteria: clean Maven 39/39 and JavaFX launch smoke; full interactive checklist remains a T09 final-QA criterion"
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "SimulationSessionTest covers both modes and nonblocking lifecycle; mvn clean test passed 39 tests; javafx:run launch smoke stayed active without startup error"
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "Automated dispatcher tests verify callback marshalling; UI code guards FX-thread rendering and exposes errors; 39-test clean suite passed"
+    }
+  }
+}

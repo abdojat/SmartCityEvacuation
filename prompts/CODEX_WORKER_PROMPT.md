@@ -1,0 +1,3 @@
+# Worker prompt
+
+Read `AGENTS.md`, every mandatory document it names, the latest `tracking/SUMMARY.md` and `tracking/HANDOFF.md`, then your assigned `tasks/Txx.md`. Confirm the task is ready and claimed to your owner before editing. Modify only its `owned_paths`; do not alter shared contracts. Log substantive progress, execute relevant tests, verify each acceptance criterion with real evidence, and report changed paths, commands/results, blockers, and proposed contract changes to the coordinator. Do not edit `tracking/HANDOFF.md`, `tasks/manifest.json`, common interfaces, or integration configuration.

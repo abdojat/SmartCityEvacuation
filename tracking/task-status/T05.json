@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task_id": "T05",
+  "status": "DONE",
+  "owner": "codex-parallel",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:49:50Z",
+  "started_at": "2026-10-20T18:48:08Z",
+  "completed_at": "2026-10-20T18:49:50Z",
+  "blocked_reason": null,
+  "evidence": [
+    "Repository-local Maven 3.9.9 mvn test BUILD SUCCESS: 29 tests, 0 failures/errors/skips; no JavaFX imports in T05-owned paths."
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "ParallelIntentComputerTest everyTickMatchesSequentialForRequiredWorkerCountsAndRepeatedRuns passed: per-tick TickStats and fingerprints equal at worker counts 1,2,4,8,16 across two repetitions."
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "ParallelIntentComputerTest passed stable bounded contiguous partition, fixed-pool reuse, cancellation/interrupt, injected failure atomicity, idempotent close, rejection after close, and worker thread termination checks."
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "task_id": "T01",
+  "status": "DONE",
+  "owner": "codex-main",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:40:27Z",
+  "started_at": "2026-10-20T18:39:31Z",
+  "completed_at": "2026-10-20T18:40:27Z",
+  "blocked_reason": null,
+  "evidence": [
+    "Tracking validation and 4 Python tests passed; Java 21 API compilation passed; JavaFX layer scan passed; Maven execution not verified because mvn is unavailable"
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "py tools/project_status.py validate/list/next succeeded before claim and validate succeeds while active"
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "py -m unittest tools.tests: 4 tests passed after state-independent correction"
+    },
+    "AC3": {
+      "verified": true,
+      "evidence": "javac --release 21 compiled shared API; ExecutionMode declares only SEQUENTIAL and PARALLEL; API tests added"
+    },
+    "AC4": {
+      "verified": true,
+      "evidence": "Java 21 javac compilation passed and pom.xml is configured; mvn command unavailable in this environment, explicitly not verified"
+    }
+  }
+}

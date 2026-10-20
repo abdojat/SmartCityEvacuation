@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "task_id": "T04",
+  "status": "DONE",
+  "owner": "codex-engine",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:47:49Z",
+  "started_at": "2026-10-20T18:45:45Z",
+  "completed_at": "2026-10-20T18:47:49Z",
+  "blocked_reason": null,
+  "evidence": [
+    "Repository-local Maven 3.9.9 mvn test BUILD SUCCESS: 24 tests, 0 failures/errors/skips; all T04 acceptance criteria verified."
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "Maven suite passed 24/24; engine tests cover movement, occupied-start swap prevention, exit evacuation, wait/ID conflict priority, wait reset/increment, conservation through validated WorldState commits, gridlock and tick limit."
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "SequentialSimulationTest.failedIntentStageDoesNotCommitClosureOrTick and IntentResolverTest malformed-intent case passed; prior fingerprint/tick remain unchanged."
+    },
+    "AC3": {
+      "verified": true,
+      "evidence": "rg -n javafx src/main/java/edu/parallel/evacuate/engine returned no matches; Maven compiled engine under Java 21."
+    }
+  }
+}

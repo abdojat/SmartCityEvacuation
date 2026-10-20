@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" viewBox="0 0 760 430" role="img" aria-labelledby="title desc">
+<title id="title">Measured median runtime by scenario and worker count</title><desc id="desc">Logarithmic milliseconds. Small is nearly flat, medium declines, large declines strongly through sixteen workers.</desc>
+<rect width="760" height="430" fill="white"/><g stroke="#ccd3dc" stroke-width="1"><path d="M90 60H720M90 140H720M90 220H720M90 300H720M90 380H720"/></g>
+<g fill="#334155" font-family="sans-serif" font-size="13"><text x="18" y="65">2000 ms</text><text x="28" y="145">500 ms</text><text x="28" y="225">100 ms</text><text x="35" y="305">20 ms</text><text x="42" y="385">5 ms</text><text x="104" y="410">Seq</text><text x="225" y="410">P1</text><text x="345" y="410">P2</text><text x="465" y="410">P4</text><text x="585" y="410">P8</text><text x="698" y="410">P16</text></g>
+<path d="M115 335 L235 318 L355 329 L475 331 L595 331 L710 333" fill="none" stroke="#16a34a" stroke-width="4"/><path d="M115 198 L235 191 L355 224 L475 244 L595 241 L710 257" fill="none" stroke="#2563eb" stroke-width="4"/><path d="M115 62 L235 63 L355 103 L475 141 L595 147 L710 151" fill="none" stroke="#dc2626" stroke-width="4"/>
+<g font-family="sans-serif" font-size="14"><text x="610" y="323" fill="#16a34a">small</text><text x="610" y="235" fill="#2563eb">medium</text><text x="610" y="138" fill="#dc2626">large</text></g><text x="270" y="28" font-family="sans-serif" font-size="17" fill="#111827">Median engine runtime (log-scaled y axis)</text>
+</svg>

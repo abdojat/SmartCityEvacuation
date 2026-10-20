@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task_id": "T03",
+  "status": "DONE",
+  "owner": "codex-path",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:45:28Z",
+  "started_at": "2026-10-20T18:43:34Z",
+  "completed_at": "2026-10-20T18:45:28Z",
+  "blocked_reason": null,
+  "evidence": [
+    "Repository-local Maven 3.9.9: targeted AStarPathfinderTest BUILD SUCCESS (6 tests); full mvn test BUILD SUCCESS (15 tests, 0 failures/errors/skips). No JavaFX imports in T03 paths."
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "AStarPathfinderTest optimal obstacle route (10 steps), deterministic equal-path ordering, lowest-cell-ID exit tie, and 100-call repeatability passed in targeted Maven run (6/6)."
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "AStarPathfinderTest obstacle detour, multiple equal-distance exits, already-at-exit, unreachable, and occupancy-independent planning cases passed (6/6)."
+    }
+  }
+}

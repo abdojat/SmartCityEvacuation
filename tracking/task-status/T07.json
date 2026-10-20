@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task_id": "T07",
+  "status": "DONE",
+  "owner": "codex-robustness",
+  "created_at": "2026-10-20T00:00:00Z",
+  "updated_at": "2026-10-20T18:52:32Z",
+  "started_at": "2026-10-20T18:50:20Z",
+  "completed_at": "2026-10-20T18:52:32Z",
+  "blocked_reason": null,
+  "evidence": [
+    "CrossModeRobustnessTest 5/5 passed; lifecycle cancel/close pair passed 10 repeated runs; full Maven BUILD SUCCESS with 34 tests, 0 failures/errors/skips on Java 21."
+  ],
+  "acceptance": {
+    "AC1": {
+      "verified": true,
+      "evidence": "CrossModeRobustnessTest documented matrix: seeds 7, 8675309, -44119; workers 1,2,4,8,16; two repetitions; every tick stats, fingerprint, cars, and blocked cells matched. Test passed."
+    },
+    "AC2": {
+      "verified": true,
+      "evidence": "300-car load invariants and API-level in-flight cancel/close, no partial commit, idempotent shutdown, rejected post-close work, and thread-leak checks passed; lifecycle pair also passed 10 repeated runs."
+    }
+  }
+}
