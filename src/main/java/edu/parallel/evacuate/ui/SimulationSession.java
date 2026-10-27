@@ -16,6 +16,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.LongConsumer;
 
 /** Owns one background simulation session; no JavaFX scene state is touched here. */
 final class SimulationSession implements AutoCloseable {
@@ -40,7 +41,8 @@ final class SimulationSession implements AutoCloseable {
 
     synchronized void start(ScenarioConfig config, ExecutionMode mode, int workers, long delayMillis,
                             BiConsumer<SimulationSnapshot, TickStats> onTick,
-                            Consumer<State> onState, Consumer<Throwable> onError) {
+                            Consumer<State> onState, LongConsumer onCompletion,
+                            Consumer<Throwable> onError) {
         Objects.requireNonNull(config, "config");
         Objects.requireNonNull(mode, "mode");
         if (workers <= 0) throw new IllegalArgumentException("workers must be positive");
@@ -48,14 +50,18 @@ final class SimulationSession implements AutoCloseable {
         if (task != null && !task.isDone()) throw new IllegalStateException("a simulation is already active");
         stopRequested.set(false);
         stateConsumer = Objects.requireNonNull(onState, "onState");
+        Objects.requireNonNull(onCompletion, "onCompletion");
         state = State.RUNNING;
         publishState(onState, State.RUNNING);
-        task = coordinator.submit(() -> runLoop(config, mode, workers, delayMillis, onTick, onState, onError));
+        task = coordinator.submit(() -> runLoop(config, mode, workers, delayMillis,
+                onTick, onState, onCompletion, onError));
     }
 
     private void runLoop(ScenarioConfig config, ExecutionMode mode, int workers, long delayMillis,
                          BiConsumer<SimulationSnapshot, TickStats> onTick,
-                         Consumer<State> onState, Consumer<Throwable> onError) {
+                         Consumer<State> onState, LongConsumer onCompletion,
+                         Consumer<Throwable> onError) {
+        long startedNanos = System.nanoTime();
         try {
             WorldState world = new WorldGenerator().generate(config);
             simulation = mode == ExecutionMode.SEQUENTIAL
@@ -68,7 +74,9 @@ final class SimulationSession implements AutoCloseable {
                 TickStats stats = simulation.tick();
                 publishTick(onTick, simulation.snapshot(), stats);
                 if (stats.remaining() == 0 || stats.tick() >= config.tickLimit() || stats.moved() == 0) {
+                    long elapsedNanos = System.nanoTime() - startedNanos;
                     state = State.FINISHED;
+                    ui.dispatch(() -> onCompletion.accept(elapsedNanos));
                     publishState(onState, State.FINISHED);
                     return;
                 }

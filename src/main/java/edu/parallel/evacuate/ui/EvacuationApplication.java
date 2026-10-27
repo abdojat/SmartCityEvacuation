@@ -20,6 +20,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /** Interactive JavaFX front end. Engine creation and ticking always run off the FX thread. */
 public final class EvacuationApplication extends Application {
@@ -30,6 +32,7 @@ public final class EvacuationApplication extends Application {
     private final ComboBox<ExecutionMode> mode = new ComboBox<>();
     private final Button start = new Button("Start"), pause = new Button("Pause");
     private final Button stop = new Button("Stop"), reset = new Button("Reset");
+    private final Label completionTime = new Label("Completion time —");
     private final Label status = new Label("Ready"), metrics = new Label("Tick 0 · Remaining —");
     private final GridCanvas canvas = new GridCanvas();
     private SimulationSession session;
@@ -52,7 +55,7 @@ public final class EvacuationApplication extends Application {
         HBox controls = new HBox(8, start, pause, stop, reset);
         controls.setAlignment(Pos.CENTER_LEFT);
         VBox sidebar = new VBox(14, new Label("Scenario"), form, controls, new Label("Session"),
-                status, metrics, legend());
+                status, metrics, completionTime, legend());
         sidebar.setPadding(new Insets(16));
         sidebar.setPrefWidth(315);
 
@@ -84,6 +87,7 @@ public final class EvacuationApplication extends Application {
         stop.setOnAction(ignored -> { session.stop(); status.setText("Stopping…"); });
         reset.setOnAction(ignored -> {
             session.stop(); canvas.clear(); metrics.setText("Tick 0 · Remaining —");
+            completionTime.setText("Completion time —");
             status.setText("Ready"); pause.setText("Pause"); setActive(false);
         });
     }
@@ -95,8 +99,9 @@ public final class EvacuationApplication extends Application {
                     mode.getValue(), workers.getText(), delay.getText());
             setError(false);
             setActive(true);
+            completionTime.setText("Completion time —");
             session.start(config.scenario(), config.mode(), config.workers(), config.delayMillis(),
-                    this::render, this::stateChanged, this::failed);
+                    this::render, this::stateChanged, this::showCompletionTime, this::failed);
         } catch (RuntimeException error) {
             showError(error.getMessage());
         }
@@ -123,6 +128,19 @@ public final class EvacuationApplication extends Application {
     private void failed(Throwable failure) {
         requireFxThread();
         showError(failure.getMessage() == null ? failure.getClass().getSimpleName() : failure.getMessage());
+    }
+
+    private void showCompletionTime(long elapsedNanos) {
+        requireFxThread();
+        completionTime.setText("Completion time " + formatElapsed(elapsedNanos));
+    }
+
+    static String formatElapsed(long elapsedNanos) {
+        long minutes = TimeUnit.NANOSECONDS.toMinutes(elapsedNanos);
+        double seconds = (elapsedNanos - TimeUnit.MINUTES.toNanos(minutes)) / 1_000_000_000.0;
+        return minutes == 0
+                ? String.format(Locale.ROOT, "%.3f s", seconds)
+                : String.format(Locale.ROOT, "%d min %.3f s", minutes, seconds);
     }
 
     private void showError(String message) { status.setText("Error: " + message); setError(true); setActive(false); }

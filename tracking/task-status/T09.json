@@ -4,7 +4,7 @@
   "status": "BLOCKED",
   "owner": "codex-main",
   "created_at": "2026-10-20T00:00:00Z",
-  "updated_at": "2026-10-20T18:58:18Z",
+  "updated_at": "2026-10-20T19:17:41Z",
   "started_at": "2026-10-20T18:56:07Z",
   "completed_at": null,
   "blocked_reason": "Full interactive JavaFX checklist (visually operate start/pause/resume/stop/reset in both modes and confirm responsiveness) requires a human-visible GUI session. javafx:run launch smoke succeeded and automated UI lifecycle tests pass, but interactive behavior was not manually observed, so AC2 remains unverified.",

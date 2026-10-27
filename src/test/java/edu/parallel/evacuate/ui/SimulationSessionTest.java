@@ -1,5 +1,6 @@
 package edu.parallel.evacuate.ui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.parallel.evacuate.api.ExecutionMode;
@@ -25,6 +26,7 @@ class SimulationSessionTest {
             session.start(config(400), ExecutionMode.PARALLEL, 4, 10,
                     (snapshot, stats) -> firstTick.countDown(),
                     state -> { if (state == SimulationSession.State.STOPPED) stopped.countDown(); },
+                    ignored -> { },
                     failure -> { throw new AssertionError(failure); });
             assertTrue(firstTick.await(5, TimeUnit.SECONDS));
             org.junit.jupiter.api.Assertions.assertTimeoutPreemptively(Duration.ofMillis(250), session::pause);
@@ -42,11 +44,29 @@ class SimulationSessionTest {
             session.start(config(40), mode, 2, 0, (snapshot, stats) -> {
                 callbackThreads.add(Thread.currentThread().getName()); tick.countDown();
             }, state -> callbackThreads.add(Thread.currentThread().getName()),
+                    ignored -> callbackThreads.add(Thread.currentThread().getName()),
                     failure -> { throw new AssertionError(failure); });
             assertTrue(tick.await(5, TimeUnit.SECONDS));
             session.stop();
             ui.flush();
             assertTrue(callbackThreads.stream().allMatch(name -> name.equals("test-ui-thread")));
+        }
+    }
+
+    @Test void completionTimeIsPublishedAndFormatted() throws Exception {
+        try (TestUi ui = new TestUi(); SimulationSession session = new SimulationSession(ui::dispatch)) {
+            CountDownLatch finished = new CountDownLatch(1);
+            CopyOnWriteArrayList<Long> elapsed = new CopyOnWriteArrayList<>();
+            session.start(config(1), ExecutionMode.SEQUENTIAL, 1, 0,
+                    (snapshot, stats) -> { }, state -> { }, nanos -> {
+                        elapsed.add(nanos);
+                        finished.countDown();
+                    }, failure -> { throw new AssertionError(failure); });
+            assertTrue(finished.await(5, TimeUnit.SECONDS));
+            assertEquals(1, elapsed.size());
+            assertTrue(elapsed.get(0) >= 0);
+            assertEquals("1.250 s", EvacuationApplication.formatElapsed(1_250_000_000L));
+            assertEquals("1 min 1.250 s", EvacuationApplication.formatElapsed(61_250_000_000L));
         }
     }
 
